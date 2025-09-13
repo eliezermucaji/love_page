@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Pedido Especial</title>
-  <link rel="shortcut icon" href="icon.png" type="image/x-icon">
   <style>
     body {
       margin: 0;
@@ -51,7 +50,7 @@
       background-color: #ff6f91;
       color: white;
       position: absolute;
-      transition: left 0.6s ease, top 0.6s ease; /* movimento visível */
+      transition: left 0.6s ease, top 0.6s ease;
     }
 
     canvas {
@@ -73,6 +72,16 @@
       100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
     }
 
+    footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-size: 14px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+    }
+
     @media(min-width: 600px) {
       .buttons {
         flex-direction: row;
@@ -88,14 +97,18 @@
     <button id="no">Não ❌</button>
   </div>
   <canvas id="fireworks"></canvas>
-  <audio id="music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+  <!-- Música de piano romântica (loop automático) -->
+  <audio id="bgMusic" src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" autoplay loop muted></audio>
+
+  <footer>© Criado por Eliezer Mucaji</footer>
 
   <script>
     const noBtn = document.getElementById('no');
     const yesBtn = document.getElementById('yes');
-    const music = document.getElementById('music');
     const canvas = document.getElementById('fireworks');
     const ctx = canvas.getContext('2d');
+    const bgMusic = document.getElementById('bgMusic');
 
     // Ajustar canvas
     canvas.width = window.innerWidth;
@@ -105,6 +118,12 @@
       canvas.height = window.innerHeight;
     });
 
+    // Desmutar música no primeiro clique/tap
+    document.body.addEventListener('click', () => {
+      bgMusic.muted = false;
+      bgMusic.play();
+    }, { once: true });
+
     // Função para mover botão "Não"
     function moveNoButton() {
       const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
@@ -113,10 +132,7 @@
       noBtn.style.top = `${y}px`;
     }
 
-    // Desktop: escapa no hover
     noBtn.addEventListener('mouseover', moveNoButton);
-
-    // Mobile: escapa no toque
     noBtn.addEventListener('touchstart', moveNoButton);
 
     // Fogos de artifício
@@ -183,12 +199,8 @@
     // Ao clicar em "Sim"
     yesBtn.addEventListener('click', () => {
       createFireworks(window.innerWidth / 2, window.innerHeight / 2);
-      music.play();
       setInterval(createHeart, 400);
     });
   </script>
-  <footer style="position: fixed; bottom: 10px; width: 100%; text-align: center; color: white; font-size: 14px; font-family: Arial, sans-serif; text-shadow: 1px 1px 3px rgba(0,0,0,0.4);">
-    © Criado por Eliezer Mucaji
-  </footer>
 </body>
 </html>
